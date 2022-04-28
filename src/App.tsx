@@ -1,12 +1,25 @@
-import './App.scss';
+import './App.scss'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+// 导入页面
+import Login from './pages/Login'
+import Layout from './pages/Layout'
+import NotFound from './pages/NotFound'
 
 function App() {
   return (
-    <div className="app">
-      {/* 配置路由 */}
-
-    </div>
-  );
+    //{/* 配置路由 */}
+    <BrowserRouter>
+      <div className="app">
+        <Switch>
+          <Redirect exact from='/' to='/home'></Redirect>
+          <Route path="/login" component={Login}></Route>
+          <Route path="/home" component={Layout}></Route>
+          {/* 兜底404 */}
+          <Route component={NotFound}></Route>
+        </Switch>
+      </div>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
