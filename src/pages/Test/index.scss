@@ -1,0 +1,29 @@
+// 原生CSS变量：类似sass、less等工具
+// 原生定义CSS变量：
+// 语法：--变量名（可以以-分割）：css变量的值
+// 1. 全局方式 => :root { }
+// 2. 局部方式 => .xxx { }
+
+:root {
+  // 全局变量：所有页面都可以使用
+  --geek-main-color: #afc;
+  --geek-main-size: 20px;
+  // 定义长语句也可以
+  --geek-border: 1px red solid;
+}
+
+.mainColor {
+  // 以下是我自定义的原生css全局变量
+  // color: var(--geek-main-color);
+  // 以下是antd-mobile自带的css全局变量，可以直接拿来使用
+  color: var(--adm-color-primary);
+  font-size: var(--geek-main-size);
+  border: var(--geek-border);
+}
+
+.vcss {
+  // 局部变量 类似JS的作用域
+  // 在当前类名下声明，就只能在当前类名下使用！！
+  --local-color: purple;
+  color: var(--local-color);
+}
