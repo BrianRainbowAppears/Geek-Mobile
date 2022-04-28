@@ -1,7 +1,7 @@
 import './App.scss'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 // 导入页面
-import Login from './pages/Login'
+import Login from '@/pages/Login'
 import Layout from './pages/Layout'
 import NotFound from './pages/NotFound'
 import Test from './pages/Test'
