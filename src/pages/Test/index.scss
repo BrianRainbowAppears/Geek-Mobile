@@ -1,3 +1,4 @@
+@import '@/styles/hairline.scss';
 // 原生CSS变量：类似sass、less等工具
 // 原生定义CSS变量：
 // 语法：--变量名（可以以-分割）：css变量的值
@@ -26,4 +27,21 @@
   // 在当前类名下声明，就只能在当前类名下使用！！
   --local-color: purple;
   color: var(--local-color);
+}
+
+.borderTest1 {
+  margin-top: 100px;
+  padding: 5px;
+  border-top: 1px solid red;
+  border-bottom: 1px solid blue;
+}
+.borderTest2 {
+  // margin-top: 100px;
+  position: relative;
+  @include hairline(bottom, purple);
+  border-top: 1px solid red;
+}
+
+.iconFix {
+  font-size: 60px;
 }

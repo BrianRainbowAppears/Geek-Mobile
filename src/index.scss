@@ -21,6 +21,13 @@ h3 {
   box-sizing: border-box;
 }
 
+.icon {
+  width: 1em; height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
 /* 覆盖组件库的全局Css变量 =》定制主题 */
 /* 为什么写两个:root ？
     因为antd组件主题（其默认的全局变量）是在:root下定义，所以有时可能优先级问题会无法覆盖
