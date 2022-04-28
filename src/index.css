@@ -20,3 +20,14 @@ h3 {
   /* 设置盒模型：怪异盒模型 */
   box-sizing: border-box;
 }
+
+/* 覆盖组件库的全局Css变量 =》定制主题 */
+/* 为什么写两个:root ？
+    因为antd组件主题（其默认的全局变量）是在:root下定义，所以有时可能优先级问题会无法覆盖
+    所以需要两个:root提高当前自定义css变量优先级
+*/
+:root:root {
+  --adm-color-primary: #fc6627;
+  --adm-font-family: 'PingFangSC-Regular';
+  --font-size: 16px;
+}
