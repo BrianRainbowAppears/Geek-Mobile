@@ -20,7 +20,7 @@ request.interceptors.request.use(config => {
   const {
     loginReducer: { token }
   } = store.getState()
-  if (token) {
+  if (!config.url?.startsWith('/authorizations')) {
     // 此处需要使用非空断言 来去掉headers类型中的undefined类型，告诉ts类型是安全的
     config.headers!.Authorization = `Bearer ${token}`
   }
@@ -59,3 +59,4 @@ request.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+export default request

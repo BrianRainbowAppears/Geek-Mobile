@@ -4,16 +4,24 @@ import { Button, NavBar, Form, Input } from 'antd-mobile'
 // 2. 给组件导入样式使用：import styles from './xxx/module.scss'
 // 3. 在元素上通过差值绑定使用：<div className={styles.类名}>
 import styles from './index.module.scss'
+import { FormData } from '@/types/data'
+import { useDispatch } from 'react-redux'
+import { loginAction } from '@/store/actions/login'
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const login = async (formData: FormData) => {
+    console.log(formData)
+    await dispatch<any>(loginAction(formData))
+  }
   return (
     <div className={styles.root}>
-      <NavBar></NavBar>
+      <NavBar>标题</NavBar>
 
       <div className="login-form">
         <h2 className="title">账号登录</h2>
 
-        <Form validateTrigger={['onBlur']}>
+        <Form onFinish={login} validateTrigger={['onBlur']}>
           <Form.Item
             name="mobile"
             validateTrigger="onBlur"
@@ -29,7 +37,13 @@ const Login = () => {
             <Input placeholder="请输入手机号" />
           </Form.Item>
 
-          <Form.Item className="login-item" extra={<span className="code-extra">发送验证码</span>}>
+          <Form.Item
+            name="code"
+            rules={[{ required: true, message: '请输入验证码' }]}
+            validateTrigger="onBlur"
+            className="login-item"
+            extra={<span className="code-extra">发送验证码</span>}
+          >
             <Input placeholder="请输入验证码" autoComplete="off" />
           </Form.Item>
 
