@@ -21,6 +21,13 @@ export const loginAction = (payload: FormData): RootThunkAction => {
     const ret = await request.post('/authorizations', payload)
     console.log(ret)
     setToken(ret.data)
-    dispatch({ type:'login/token' , payload: ret.data})
+    dispatch({ type: 'login/token', payload: ret.data })
+  }
+}
+
+export const sendCodeAction = (mobile: string): RootThunkAction => {
+  return async (dispatch, getState) => {
+    const ret = await request.get(`/sms/codes/${mobile}`)
+    console.log('获取的验证码：', ret)
   }
 }
