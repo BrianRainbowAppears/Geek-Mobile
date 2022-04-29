@@ -8,9 +8,8 @@ import { Token } from '@/types/data'
 const TOKEN_KEY: string = 'tokenValue'
 
 // 获取token：把序列化的字符串转成对象
-export function getToken(): Token {
-  return JSON.parse(localStorage.getItem(TOKEN_KEY) ?? '{}') as Token
-}
+export const getToken = (): Token =>
+  JSON.parse(localStorage.getItem(TOKEN_KEY) ?? '{}') as Token
 // 存储token：注意把对象序列化成字符串存储
 export function setToken(newToken: Token): void {
   localStorage.setItem(TOKEN_KEY, JSON.stringify(newToken))

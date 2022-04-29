@@ -2,6 +2,7 @@
 import { FormData } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import request from '@/utils/request'
+import { setToken } from '@/utils/token'
 
 export function logoutAction() {
   return (dispatch: any) => {
@@ -19,7 +20,7 @@ export const loginAction = (payload: FormData): RootThunkAction => {
   return async (dispatch, getState) => {
     const ret = await request.post('/authorizations', payload)
     console.log(ret)
-
-    // dispatch({ type: , payload})
+    setToken(ret.data)
+    dispatch({ type:'login/token' , payload: ret.data})
   }
 }
