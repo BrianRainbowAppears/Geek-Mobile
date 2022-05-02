@@ -29,7 +29,7 @@ function Test() {
       {/* 经过封装的Icon图标组件 提高Icon复用性和封装性 方便调用 */}
       <Icon onClick={() => {
         console.log('123')
-      }} type="#iconbtn_qa_sel" className='iconFix'></Icon>
+      }} type="iconbtn_qa_sel" className='iconFix'></Icon>
     </div>
   )
 }

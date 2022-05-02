@@ -76,6 +76,8 @@ const Login = () => {
       // 开启定时器后，将定时器ID存储到Ref对象的current属性中
       // 开启定时器一定要用window.setInterval，这样返回值才是number累心给的数值
       timerRef.current = window.setInterval(() => {
+        // 此处会形成闭包，因为内层访问外层的变量，外层的变量会常驻内存：变量私有化
+        // 因为setState
         console.log(count)
         setCount(count => {
           console.log(count)
