@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 import { FormData } from '@/types/data'
 import { useDispatch } from 'react-redux'
 import { loginAction, sendCodeAction } from '@/store/actions/login'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { AxiosError } from 'axios'
 import { useEffect, useRef, useState } from 'react'
 import { InputRef } from 'antd-mobile/es/components/input'
@@ -16,6 +16,7 @@ const Login = () => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
   const history = useHistory()
+  const location = useLocation<{ from: string } | undefined>()
   const [count, setCount] = useState(0)
   // 通过useRef创建一个Ref对象，用来存储定时器id
   const timerRef = useRef(-1)
@@ -31,7 +32,8 @@ const Login = () => {
         content: '登陆成功',
         // afterClose方法会在轻提示效果结束后触发
         afterClose: () => {
-          history.push('/home')
+          // 初始化时提示location.state可能为unknown，所以需要给useLocation钩子函数加泛型
+          history.push(location.state?.from || '/home')
         }
       })
     } catch (error) {

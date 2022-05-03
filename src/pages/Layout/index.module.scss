@@ -12,6 +12,7 @@
       width: 100%;
       height: 50px;
       background-color: #f7f8fa;
+      // 解决移动1px像素问题
       @include hairline(top, #f0f0f0);
 
       .icon {

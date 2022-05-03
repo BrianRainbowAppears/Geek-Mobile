@@ -11,7 +11,7 @@ import Video from '../Video'
 import Profile from '../Profile'
 
 const tabs = [
-  { path: '/home/index', icon: 'iconbtn_home', text: '首页' },
+  { path: '/home', icon: 'iconbtn_home', text: '首页' },
   { path: '/home/question', icon: 'iconbtn_qa', text: '问答' },
   { path: '/home/video', icon: 'iconbtn_video', text: '视频' },
   { path: '/home/profile', icon: 'iconbtn_mine', text: '我的' }
@@ -27,7 +27,8 @@ const Layout = () => {
   }
   return (
     <div className={styles.root}>
-      <Route exact path="/home/index">
+      {/* 想要实现进入layout页面默认显示Home组件，只需要将子组件路径与父组件路径保持一致即可实现，但是需要加exact属性，避免其他组件也会根据/home路径进行加载，不需要使用重定向，我们再工作中也需要避免多次使用重定向 */}
+      <Route exact path="/home">
         <Home></Home>
       </Route>
       <Route path="/home/question">

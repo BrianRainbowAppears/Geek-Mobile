@@ -45,9 +45,9 @@ request.interceptors.response.use(
           // 2. 删除Redux中个人数据
           // 3. 删除本地存储token
           // store.dispatch(logoutAction())
-          // 跳转登录页
+          // 跳转登录页（在点击登陆时使用history.push(location.state.from拿到之前登录路径进行快速访问)）
           customHistory.push({
-            pathname: 'login',
+            pathname: '/login',
             state: {
               from: customHistory.location.pathname
             }
