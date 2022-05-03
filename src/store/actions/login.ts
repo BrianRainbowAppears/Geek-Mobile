@@ -1,5 +1,5 @@
 // import { clearToken } from "@/utils/token"
-import { FormData } from '@/types/data'
+import { FormData, ResponseLogin } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import request from '@/utils/request'
 import { setToken } from '@/utils/token'
@@ -18,7 +18,7 @@ export function logoutAction() {
 
 export const loginAction = (payload: FormData): RootThunkAction => {
   return async (dispatch, getState) => {
-    const ret = await request.post('/authorizations', payload)
+    const ret: ResponseLogin = await request.post('/authorizations', payload)
     console.log(ret)
     setToken(ret.data)
     dispatch({ type: 'login/token', payload: ret.data })

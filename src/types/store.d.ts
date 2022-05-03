@@ -9,6 +9,7 @@ type RootAction = loginAction | getUserInfoAction
 // Redux异步action返回值的类型
 export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
 
+
 // 相关模块的action类型：login home 等..
 export type loginAction = {
   type: 'login/token'
@@ -17,4 +18,8 @@ export type loginAction = {
 export type getUserInfoAction = {
   type: 'profile/userInfo',
   payload: User
+} | {
+  // 此处可定义联合类型
+  type: 'profile/edit',
+  payload: EditProfile
 }

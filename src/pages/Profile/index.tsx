@@ -2,20 +2,24 @@ import { Link, useHistory } from 'react-router-dom'
 
 import Icon from '@/components/Icon'
 import styles from './index.module.scss'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+// import { useEffect } from 'react'
+// import { useDispatch, useSelector } from 'react-redux'
 import { getUserInfoAction } from '@/store/actions/profile'
-import { RootState } from '@/types/store'
+// import { RootState } from '@/types/store'
+import { useInitState } from '../hooks'
 
 const Profile = () => {
   const history = useHistory()
-  const dispatch = useDispatch()
-  // 1. 获取用户个人信息，组件分发异步action
-  useEffect(() => {
-    dispatch<any>(getUserInfoAction())
-  }, [dispatch])
-  // 2. 个人信息存储到Redux后，使用useSelector钩子拿取Redux数据在页面上进行渲染
-  const { user } = useSelector((state: RootState) => state.getUserInfoReducer)
+  // const dispatch = useDispatch()
+  // // 1. 获取用户个人信息，组件分发异步action
+  // useEffect(() => {
+  //   dispatch<any>(getUserInfoAction())
+  // }, [dispatch])
+  // // 2. 个人信息存储到Redux后，使用useSelector钩子拿取Redux数据在页面上进行渲染
+  // const { user } = useSelector((state: RootState) => state.getUserInfoReducer)
+
+  // 以上代码使用自定义Hook useInitState可简化为：（传入两个参数）
+  const {user} = useInitState(getUserInfoAction, 'getUserInfoReducer')
   const { name, photo, art_count, follow_count, fans_count, like_count } = user
 
   return (

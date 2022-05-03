@@ -18,6 +18,12 @@ export const getUserInfoReducer = (state = initialState, action: getUserInfoActi
       ...state,
       user: action.payload
     }
+  } else if (action.type === 'profile/edit') {
+    // 编辑页面个人数据
+    return {
+      ...state,
+      user: action.payload
+    }
   }
   return state
 }
