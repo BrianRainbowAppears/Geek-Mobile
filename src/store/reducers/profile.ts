@@ -1,12 +1,14 @@
-import { User } from '@/types/data'
+import { EditProfile, User } from '@/types/data'
 import { getUserInfoAction } from '@/types/store'
 
 type ProfileType = {
-  user: User
+  user: User,
+  edit: EditProfile
 }
 // 添加类型断言，直接在initialState后添加类型会报错
 const initialState = {
-  user: {}
+  user: {},
+  edit: {}
 } as ProfileType
 
 // 刚开始创建action可以给予unknown类型，既不会报错了
@@ -22,7 +24,18 @@ export const getUserInfoReducer = (state = initialState, action: getUserInfoActi
     // 编辑页面个人数据
     return {
       ...state,
-      user: action.payload
+      edit: action.payload
+    }
+  } else if (action.type === 'profile/update') {
+    // 局部更新修改Redux中的用户信息
+    return {
+      ...state,
+      // 新状态
+      edit: {
+        ...state.edit,
+        // 替换之前修改的信息
+        ...action.payload
+      }
     }
   }
   return state

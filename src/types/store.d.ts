@@ -1,7 +1,7 @@
 // Redux 相关类型
 import { ThunkAction } from 'redux-thunk'
 import store from '../store'
-import { User } from './data'
+import { EditProfile, User } from './data'
 // Redux中store数据的类型
 export type RootState = ReturnType<typeof store.getState>
 // Redux中所有action的类型
@@ -22,4 +22,7 @@ export type getUserInfoAction = {
   // 此处可定义联合类型
   type: 'profile/edit',
   payload: EditProfile
+} | {
+  type: 'profile/update',
+  payload: Partial<EditProfile>
 }

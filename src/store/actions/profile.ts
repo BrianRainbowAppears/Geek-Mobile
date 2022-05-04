@@ -1,4 +1,4 @@
-import { ResponseEdit, ResponseUser } from '@/types/data'
+import { EditProfile, ResponseEdit, ResponseUser } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import request from '@/utils/request'
 
@@ -24,5 +24,13 @@ export const getEditUserAction = (): RootThunkAction => {
     console.log('编辑页面数据：', ret.data)
     // 存储到Redux
     dispatch({ type: 'profile/edit', payload: ret.data })
+  }
+}
+// 修改昵称
+export const updateUserName = (user: Partial<EditProfile>):RootThunkAction => {
+  return async(dispatch,getState)=>{
+    await request.patch('/user/profile', user)
+    // 分发action局部更新Redux，避免全局更新，提高效率
+    dispatch({ type:'profile/update' , payload: user})
   }
 }
