@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound'
 import Test from './pages/Test'
 import Edit from '@/pages/Profile/Edit'
 import customHistory from './utils/history'
+import { AuthRoute } from './components/AuthRoute'
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
           <Route path="/home" component={Layout}></Route>
           <Route path="/test" component={Test}></Route>
           {/* 路由在哪显示就写到哪，该页面时单独页面，修改页面不属于layout模块。所以只能写到一级路由 */}
-          <Route path="/profile/edit" component={Edit}></Route>
+          <AuthRoute path="/profile/edit">
+            <Edit></Edit>
+          </AuthRoute>
           {/* 兜底404 */}
           <Route component={NotFound}></Route>
         </Switch>

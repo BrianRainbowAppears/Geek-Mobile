@@ -188,6 +188,9 @@ const ProfileEdit = () => {
       <div className="content">
         {/* 标题 */}
         <NavBar
+        onBack={() => {
+          history.push('/home/profile')
+        }}
           style={{
             '--border-bottom': '1px solid #F0F0F0'
           }}
