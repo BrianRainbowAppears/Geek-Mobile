@@ -11,6 +11,9 @@ const initialState: Token = getToken() || {
 export const loginReducer = (state = initialState, action: loginAction) => {
   if (action.type === 'login/token') {
     return action.payload
+  } 
+  if (action.type === 'login/logout') {
+    return {}
   }
   return state
 }

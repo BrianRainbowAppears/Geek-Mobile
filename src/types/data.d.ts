@@ -7,6 +7,7 @@ type ApiResponse<Data>={
 export type ResponseUser = ApiResponse<User>
 export type ResponseLogin = ApiResponse<Token>
 export type ResponseEdit = ApiResponse<EditProfile>
+export type UploadResponse = ApiResponse<{photo: string}>
 
 // 后台返回数据的类型
 export type Token = {

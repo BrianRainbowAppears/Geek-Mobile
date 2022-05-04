@@ -13,7 +13,7 @@ type Props = {
   value: string
   hidePop: () => void
   name: string
-  onUpdateName: (type: string,newName: string) => void
+  onUpdateName: (type: string,newName: string, onClose: () => void) => void
 }
 // 给传入的Props进行解构，并赋予类型
 const EditInput = ({ hidePop, name, onUpdateName, type, value }: Props) => {
@@ -21,8 +21,7 @@ const EditInput = ({ hidePop, name, onUpdateName, type, value }: Props) => {
   const onSave = () => {
     if (type === '') return 
     // 修改的是昵称还是简介 => 通过type告诉父组件修改的属性是什么
-    onUpdateName(type, val)
-    hidePop()
+    onUpdateName(type, val,hidePop )
   }
   const isName = type === 'name'
   // 监听value的变化，value变化重新更新val的值，能够防止复用该弹窗的昵称和简介修改相互影响

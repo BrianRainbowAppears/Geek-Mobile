@@ -14,7 +14,10 @@ export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
 export type loginAction = {
   type: 'login/token'
   payload: token
+} | {
+  type: 'login/logout'
 }
+
 export type getUserInfoAction = {
   type: 'profile/userInfo',
   payload: User

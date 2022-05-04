@@ -2,7 +2,7 @@
 import { FormData, ResponseLogin } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import request from '@/utils/request'
-import { setToken } from '@/utils/token'
+import { clearToken, setToken } from '@/utils/token'
 
 export function logoutAction() {
   return (dispatch: any) => {
@@ -29,5 +29,13 @@ export const sendCodeAction = (mobile: string): RootThunkAction => {
   return async (dispatch, getState) => {
     const ret = await request.get(`/sms/codes/${mobile}`)
     console.log('获取的验证码：', ret)
+  }
+}
+// 退出登录功能
+export const logout = (): RootThunkAction => {
+  return async(dispatch,getState)=>{
+    // 分发action清除Redux中的token，以及本地token
+    dispatch({ type:'login/logout'})
+    clearToken()
   }
 }
