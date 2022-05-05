@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { useInitState } from '../hooks'
 // 导入弹层内容组件
 import Channels from './components/Channels'
+import ArticleList from './components/ArticleList'
 
 import styles from './index.module.scss'
 
@@ -28,8 +29,7 @@ const Home = () => {
   const changeActive = (id: string) => {
     // 因为不需要异步action，所以在这里直接分发dispatch保存id为当前active值到redux中
     // 1. 存储当前点击的频道ID
-    dispatch({type: 'changeActive/home', payload: parseInt(id)})
-  
+    dispatch({ type: 'changeActive/home', payload: parseInt(id) })
   }
 
   return (
@@ -42,7 +42,8 @@ const Home = () => {
           {/* Tabs.Tab 展示页签的内容 */}
           {userChannel.map((item, i) => (
             <Tabs.Tab title={item.name} key={item.id}>
-              {'推荐频道的内容' + i}
+              {/* {'推荐频道的内容' + i} */}
+              <ArticleList channelId={item.id}></ArticleList>
             </Tabs.Tab>
           ))}
         </Tabs>

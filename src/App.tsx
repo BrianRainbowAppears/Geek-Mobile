@@ -6,6 +6,7 @@ import Layout from './pages/Layout'
 import NotFound from './pages/NotFound'
 import Test from './pages/Test'
 import Edit from '@/pages/Profile/Edit'
+import ArticleDetail from '@/pages/Home/components/ArticleDetail'
 import customHistory from './utils/history'
 import { AuthRoute } from './components/AuthRoute'
 
@@ -19,6 +20,9 @@ function App() {
           <Route path="/login" component={Login}></Route>
           <Route path="/home" component={Layout}></Route>
           <Route path="/test" component={Test}></Route>
+          <Route path='/article/:artId'>
+            <ArticleDetail></ArticleDetail>
+          </Route>
           {/* 路由在哪显示就写到哪，该页面时单独页面，修改页面不属于layout模块。所以只能写到一级路由 */}
           <AuthRoute path="/profile/edit">
             <Edit></Edit>

@@ -1,4 +1,4 @@
-import { UserChannelResponse } from '@/types/data'
+import { Channel, UserChannelResponse } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import request from '@/utils/request'
 import { differenceBy } from 'lodash'
@@ -31,5 +31,20 @@ export const getAllChannelAction = (): RootThunkAction => {
     console.log('推荐频道数据：', restChannel)
 
     dispatch({ type: 'getRestChannel/home', payload:restChannel})
+  }
+}
+
+// 删除频道
+export const delChannelAction = (channel: Channel): RootThunkAction => {
+  return async(dispatch,getState)=>{
+    await request.delete(`/user/channels/${channel.id}`)
+    dispatch({ type:'delChannel/home' , payload: channel})
+  }
+}
+// 添加频道
+export const addChannelAction = (channel: Channel) : RootThunkAction => {
+  return async(dispatch,getState)=>{
+    await request.patch('/user/channels', {channels: [channel]})
+    dispatch({ type: 'addChannel/home', payload: channel})
   }
 }

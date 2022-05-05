@@ -9,6 +9,25 @@ export type ResponseLogin = ApiResponse<Token>
 export type ResponseEdit = ApiResponse<EditProfile>
 export type UploadResponse = ApiResponse<{photo: string}>
 export type UserChannelResponse = ApiResponse<UserChannel>
+export type ArticlesResponse = ApiResponse<Articles>
+
+// 文章列表
+export type ArticlesItem = {
+  art_id: string
+  aut_id: string
+  aut_name: string
+  comm_count: number
+  cover: {
+    type: 0 | 1 | 3
+    images: string[]
+  }
+  pubdate: string
+  title: string
+}
+export type Articles = {
+  pre_timestamp: number
+  results: ArticlesItem[]
+}
 
 // 频道
 export type Channel = {

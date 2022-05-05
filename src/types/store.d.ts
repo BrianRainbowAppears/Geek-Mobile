@@ -1,7 +1,7 @@
 // Redux 相关类型
 import { ThunkAction } from 'redux-thunk'
 import store from '../store'
-import { EditProfile, User } from './data'
+import { Channel, EditProfile, User } from './data'
 // Redux中store数据的类型
 export type RootState = ReturnType<typeof store.getState>
 // Redux中所有action的类型
@@ -46,4 +46,12 @@ export type HomeAction =
   | {
       type: 'changeActive/home'
       payload: number
+    }
+  | {
+      type: 'delChannel/home'
+      payload: Channel
+    }
+  | {
+      type: 'addChannel/home'
+      payload: Channel
     }
