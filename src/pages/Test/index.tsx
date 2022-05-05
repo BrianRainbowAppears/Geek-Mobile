@@ -1,8 +1,22 @@
 import { Button } from 'antd-mobile'
 import './index.scss'
 import Icon from '@/components/Icon'
+import {differenceBy} from 'lodash'
 
 function Test() {
+  // 原生方式：
+  var all = [1, 3, 5, 7]
+  var my = [1, 7]
+  // 最终希望拿到：[3, 5]
+  const afterAll = all.filter(allItem => my.findIndex(myItem => myItem === allItem) < 0)
+  console.log(afterAll);
+  // 使用lodash插件方法：
+  // 参数一：传入所有数据
+  // 参数二：传入要减去的数据
+  // 参数三：传入判断item是否相同的标识属性 => id
+  console.log(differenceBy(all, my));
+  
+  
   return (
     <div>
       {/* 测试组件库 */}
@@ -27,9 +41,13 @@ function Test() {
         <use xlinkHref="#iconbtn_like_sel"></use>
       </svg>
       {/* 经过封装的Icon图标组件 提高Icon复用性和封装性 方便调用 */}
-      <Icon onClick={() => {
-        console.log('123')
-      }} type="iconbtn_qa_sel" className='iconFix'></Icon>
+      <Icon
+        onClick={() => {
+          console.log('123')
+        }}
+        type="iconbtn_qa_sel"
+        className="iconFix"
+      ></Icon>
     </div>
   )
 }

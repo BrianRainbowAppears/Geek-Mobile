@@ -8,6 +8,16 @@ export type ResponseUser = ApiResponse<User>
 export type ResponseLogin = ApiResponse<Token>
 export type ResponseEdit = ApiResponse<EditProfile>
 export type UploadResponse = ApiResponse<{photo: string}>
+export type UserChannelResponse = ApiResponse<UserChannel>
+
+// 频道
+export type Channel = {
+  id: number
+  name: string
+}
+export type UserChannel = {
+  channels: Channel[]
+}
 
 // 后台返回数据的类型
 export type Token = {
