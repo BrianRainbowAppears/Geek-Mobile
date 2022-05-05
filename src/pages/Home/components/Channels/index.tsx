@@ -2,10 +2,11 @@ import classnames from 'classnames'
 
 import Icon from '@/components/Icon'
 import styles from './index.module.scss'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/types/store'
 import { useInitState } from '@/pages/hooks'
 import { getAllChannelAction } from '@/store/actions/home'
+import { useState } from 'react'
 
 // 接收父组件的传值
 type Props = {
@@ -15,7 +16,23 @@ const Channels = ({ closeChannel }: Props) => {
   // 1. 获取用户频道数据
   const { userChannel } = useSelector((state: RootState) => state.homeReducer)
   // 2. 获取频道推荐数据
-  const { restChannel } = useInitState(getAllChannelAction, 'homeReducer')
+  const { restChannel, active } = useInitState(getAllChannelAction, 'homeReducer')
+  // 3. 用户频道编辑状态切换
+  const [isEdit, setEdit] = useState(false)
+  // 切换编辑状态方法
+  const changeEdit = () => {
+    // 触发即取反，进行切换操作
+    setEdit(!isEdit)
+  }
+  // 点击高亮
+  const dispatch = useDispatch()
+  const changeActive = (id: number) => {
+    // 因为不需要异步action，所以在这里直接分发dispatch保存id为当前active值到redux中
+    // 1. 存储当前点击的频道ID
+    dispatch({type: 'changeActive/home', payload: id})
+    // 2. 关闭弹窗 =》 和首页切换会联动
+    closeChannel()
+  }
 
   return (
     <div className={styles.root}>
@@ -25,16 +42,20 @@ const Channels = ({ closeChannel }: Props) => {
       <div className="channel-content">
         {/* 编辑时，添加类名 edit */}
         {/* 用户频道数据 */}
-        <div className={classnames('channel-item')}>
+        <div className={classnames('channel-item', isEdit && 'edit')}>
           <div className="channel-item-header">
             <span className="channel-item-title">我的频道</span>
             <span className="channel-item-title-extra">点击进入频道</span>
-            <span className="channel-item-edit">编辑</span>
+            <span onClick={changeEdit} className="channel-item-edit">
+              {isEdit ? '保存' : '编辑'}
+            </span>
           </div>
           <div className="channel-list">
             {/* 选中时，添加类名 selected */}
             {userChannel.map(item => (
-              <span key={item.id} className={classnames('channel-list-item')}>
+              <span onClick={() => {
+                changeActive(item.id)
+              }} key={item.id} className={classnames('channel-list-item', active === item.id? 'selected': '')}>
                 {item.name}
                 <Icon type="iconbtn_tag_close" />
               </span>

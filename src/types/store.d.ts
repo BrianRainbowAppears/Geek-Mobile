@@ -43,3 +43,7 @@ export type HomeAction =
       type: 'getRestChannel/home'
       payload: Channel[]
     }
+  | {
+      type: 'changeActive/home'
+      payload: number
+    }
