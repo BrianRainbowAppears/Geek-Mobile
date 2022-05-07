@@ -10,6 +10,7 @@ import Channels from './components/Channels'
 import ArticleList from './components/ArticleList'
 
 import styles from './index.module.scss'
+import { useHistory } from 'react-router-dom'
 
 const Home = () => {
   const { userChannel, active } = useInitState(getUserChannelAction, 'homeReducer')
@@ -31,6 +32,11 @@ const Home = () => {
     // 1. 存储当前点击的频道ID
     dispatch({ type: 'changeActive/home', payload: parseInt(id) })
   }
+  // 4. 搜索功能
+  const history = useHistory()
+  const onSearch = () => {
+    history.push('/search')
+  }
 
   return (
     <div className={styles.root}>
@@ -50,7 +56,7 @@ const Home = () => {
       )}
       {/* 右侧按钮：1. 搜索 2. 频道管理 */}
       <div className="tabs-opration">
-        <Icon type="iconbtn_search" />
+        <Icon onClick={onSearch} type="iconbtn_search" />
         <Icon onClick={openChannel} type="iconbtn_channel" />
       </div>
 
