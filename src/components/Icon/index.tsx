@@ -4,9 +4,9 @@
 import classNames from 'classnames'
 // 参数 Props 类型样式
 type Props = {
-  type: string  // 控制显示不同图标
-  className?: string  // 控制图标样式
-  onClick?: () => void  // 点击图标执行的回调函数
+  type: string // 控制显示不同图标
+  className?: string // 控制图标样式
+  onClick?(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void // 点击图标执行的回调函数
 }
 
 // 解构参数：Props 赋予类型样式

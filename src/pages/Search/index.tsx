@@ -92,6 +92,16 @@ const SearchPage = () => {
     saveRecord(keyword)
   }
 
+  // 4. 删除历史记录
+  // 删除单个
+  const delRecord = (rd: string) => {
+    setRecord(record.filter(item => item !== rd))
+  }
+  // 删除所有
+  const delAllRecord = () => {
+    setRecord([])
+  }
+
   return (
     <div className={styles.root}>
       <NavBar
@@ -121,7 +131,7 @@ const SearchPage = () => {
         >
           <div className="history-header">
             <span>搜索历史</span>
-            <span>
+            <span onClick={delAllRecord}>
               <Icon type="iconbtn_del" />
               清除全部
             </span>
@@ -129,9 +139,22 @@ const SearchPage = () => {
 
           <div className="history-list">
             {record.map((item, i) => (
-              <span key={i} className="history-item">
+              <span
+                onClick={() => {
+                  onSearch(item)
+                }}
+                key={i}
+                className="history-item"
+              >
                 <span className="text-overflow">{item}</span>
-                <Icon type="iconbtn_essay_close" />
+                <Icon
+                  onClick={e => {
+                    // 阻止冒泡
+                    e.stopPropagation()
+                    delRecord(item)
+                  }}
+                  type="iconbtn_essay_close"
+                />
               </span>
             ))}
           </div>

@@ -6,6 +6,7 @@ import styles from './index.module.scss'
 import { ArticlesItem } from '@/types/data'
 import { useHistory } from 'react-router-dom'
 import { relTime } from '@/utils/utils'
+import { Image } from 'antd-mobile'
 
 type Props = {
   /**
@@ -41,7 +42,14 @@ const ArticleItem = ({ type, item }: Props) => {
         {item.cover.type !== 0 && (
           <div className="article-imgs">
             <div className="article-img-wrapper">
-              <img
+              <Image
+                // 开启懒加载
+                lazy
+                // 设置图片宽高(默认撑开图片宽高)
+                style={{
+                  '--width': '110px',
+                  '--height': '75px'
+                }}
                 src={item.cover.images[0]}
                 // src="http://geek.itheima.net/resources/images/63.jpg"
                 alt=""

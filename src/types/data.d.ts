@@ -1,16 +1,25 @@
 // 对于项目接口，每个接口返回的数据格式都是一致的，所哟可以通过封装泛型工具函数来实现复用性
-type ApiResponse<Data>={
-  message: string,
+type ApiResponse<Data> = {
+  message: string
   data: Data
 }
 
 export type ResponseUser = ApiResponse<User>
 export type ResponseLogin = ApiResponse<Token>
 export type ResponseEdit = ApiResponse<EditProfile>
-export type UploadResponse = ApiResponse<{photo: string}>
+export type UploadResponse = ApiResponse<{ photo: string }>
 export type UserChannelResponse = ApiResponse<UserChannel>
 export type ArticlesResponse = ApiResponse<Articles>
 export type SuggestionResponse = ApiResponse<Suggestion>
+export type SearchResultResponse = ApiResponse<SearchResult>
+
+// 搜索结果
+export type SearchResult = {
+  page: number
+  per_page: number
+  total_count: number
+  results: Articles['results']
+}
 
 // 搜索关键词
 export type Suggestion = {
