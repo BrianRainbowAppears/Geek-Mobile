@@ -84,6 +84,7 @@ const SearchPage = () => {
   // 3. 跳转搜索
   const onSearch = (keyword: string) => {
     console.log('跳转搜索：', keyword)
+    // 延迟跳转，解决跳转后useEffect监听不到执行的问题
     setTimeout(() => {
       history.push(`/search/result?q=${keyword}`)
     }, 0)
@@ -111,11 +112,11 @@ const SearchPage = () => {
         <SearchBar onSearch={onSearch} onChange={changeKeyword} value={keyword} placeholder="请输入关键字搜索" />
       </NavBar>
       {/* 搜索历史记录 */}
-      {true && (
+      {suggestList.length === 0 && (
         <div
           className="history"
           style={{
-            display: true ? 'none' : 'block'
+            display: record.length === 0 ? 'none' : 'block'
           }}
         >
           <div className="history-header">
@@ -127,10 +128,12 @@ const SearchPage = () => {
           </div>
 
           <div className="history-list">
-            <span className="history-item">
-              <span className="text-overflow">黑马程序员</span>
-              <Icon type="iconbtn_essay_close" />
-            </span>
+            {record.map((item, i) => (
+              <span key={i} className="history-item">
+                <span className="text-overflow">{item}</span>
+                <Icon type="iconbtn_essay_close" />
+              </span>
+            ))}
           </div>
         </div>
       )}
