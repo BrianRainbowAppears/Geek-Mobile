@@ -11,6 +11,7 @@
     "@types/node": "^16.11.31",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
+    "ahooks": "^2.10.14",
     "antd-mobile": "^5.10.4",
     "axios": "^0.27.2",
     "classnames": "^2.3.1",

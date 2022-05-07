@@ -10,6 +10,12 @@ export type ResponseEdit = ApiResponse<EditProfile>
 export type UploadResponse = ApiResponse<{photo: string}>
 export type UserChannelResponse = ApiResponse<UserChannel>
 export type ArticlesResponse = ApiResponse<Articles>
+export type SuggestionResponse = ApiResponse<Suggestion>
+
+// 搜索关键词
+export type Suggestion = {
+  options: string[]
+}
 
 // 文章列表
 export type ArticlesItem = {
