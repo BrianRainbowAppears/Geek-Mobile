@@ -5,10 +5,10 @@ import { differenceBy } from 'lodash'
 // 对xss进行消杀的库
 import DOMPurify from 'dompurify'
 // 页面中代码块高亮
-import hljs from 'highlight.js'
+// import hljs from 'highlight.js'
 // 代码高亮的主题
 import 'highlight.js/styles/dark.css'
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 import { useHighLightCode } from '../hooks'
 
 function Test() {

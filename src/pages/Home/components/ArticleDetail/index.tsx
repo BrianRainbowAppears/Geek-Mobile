@@ -7,14 +7,24 @@ import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useEffect, useRef, useState } from 'react'
-import { follow, getArticleDetail, unFollow } from '@/api/detail'
-import { ArticleDetail } from '@/types/data'
+import { follow, getArticleDetail, getComments, unFollow } from '@/api/detail'
+import { ArticleCommentItem, ArticleDetail } from '@/types/data'
 import { formatTime } from '@/utils/utils'
 import DOMPurify from 'dompurify'
 // 代码高亮的主题
 import 'highlight.js/styles/dark.css'
 // 骨架屏
 import ContentLoader from 'react-content-loader'
+import NoneComment from '@/components/NoneComment'
+
+// 使用枚举类型来指定评论类型：
+// 语法：enum 枚举名字 { 枚举属性1=值1， 枚举属性2=值2 }
+enum CommentType {
+  Article = 'a', // 对文章进行评论
+  Comment = 'c' // 对评论进行回复
+}
+// 使用：
+// CommentType.Article
 
 const Article = () => {
   const history = useHistory()
@@ -88,9 +98,29 @@ const Article = () => {
     }
   }
 
-  const loadMoreComments = async () => {
-    console.log('加载更多评论')
+  // 5. 获取当前文章的评论列表数据
+  const [commentList, setCommentList] = useState<ArticleCommentItem[]>([])
+  const [hasMore, setHasMore] = useState(true)
+  // 获取评论数据分页参数
+  const offset = useRef<string | null>(null)
+  async function loadMore() {
+    const {
+      data: { total_count, results, last_id }
+    } = await getComments(CommentType.Article, artId, offset.current)
+
+    setCommentList([...commentList, ...results])
+    if (total_count === commentList.length) {
+      // 后台数据的总数 = 加载数量 => 没有数量了
+      setHasMore(false)
+    } else {
+      // 还有数据，使用后台返回的last_id作为下一页数据请求的起点
+      offset.current = last_id
+    }
   }
+
+  // const loadMoreComments = async () => {
+  //   console.log('加载更多评论')
+  // }
 
   const renderArticle = () => {
     // 文章详情
@@ -133,12 +163,18 @@ const Article = () => {
             <span>全部评论（10）</span>
             <span>20 点赞</span>
           </div>
-
-          <div className="comment-list">
-            <CommentItem />
-
-            <InfiniteScroll hasMore={false} loadMore={loadMoreComments} />
-          </div>
+          {detail.comm_count === 0 ? (
+            <NoneComment></NoneComment>
+          ) : (
+            <div className="comment-list">
+              {/* 评论列表 */}
+              {commentList.map(item => (
+                <CommentItem {...item} key={item.com_id} />
+              ))}
+              {/* 无限加载组件 */}
+              <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
+            </div>
+          )}
         </div>
       </div>
     )
