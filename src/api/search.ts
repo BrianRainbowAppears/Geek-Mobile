@@ -13,8 +13,9 @@ export function getSuggestion(params: ParmasSuggest): Promise<SuggestionResponse
 
 // 获取搜索结果列表
 type ParmasSearch = {
-  q: string
-  page: number
+  q: string  // 查询关键词
+  page?: number  // 页码
+  per_page?: number  // 每页数量
 }
 export function getSearchList(params: ParmasSearch): Promise<SearchResultResponse> {
   return request.get('/search', { params })

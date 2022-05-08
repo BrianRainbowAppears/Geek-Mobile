@@ -12,6 +12,25 @@ export type UserChannelResponse = ApiResponse<UserChannel>
 export type ArticlesResponse = ApiResponse<Articles>
 export type SuggestionResponse = ApiResponse<Suggestion>
 export type SearchResultResponse = ApiResponse<SearchResult>
+export type ArticleDetailResponse = ApiResponse<ArticleDetail>
+
+// -- 文章详情 --
+export type ArticleDetail = {
+  art_id: string
+  title: string
+  pubdate: string
+  aut_id: string
+  aut_name: string
+  aut_photo: string
+  is_followed: boolean
+  attitude: number
+  content: string
+  is_collected: boolean
+  // 接口中缺失
+  comm_count: number
+  like_count: number
+  read_count: number
+}
 
 // 搜索结果
 export type SearchResult = {

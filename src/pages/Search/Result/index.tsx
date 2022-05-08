@@ -4,7 +4,7 @@ import { InfiniteScroll, NavBar } from 'antd-mobile'
 import ArticleItem from '@/components/ArticleItem'
 
 import styles from './index.module.scss'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { getSearchList } from '@/api/search'
 import { ArticlesItem, SearchResultResponse } from '@/types/data'
 
