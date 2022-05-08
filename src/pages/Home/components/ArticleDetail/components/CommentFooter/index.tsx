@@ -1,4 +1,5 @@
 import Icon from '@/components/Icon'
+import { useParams } from 'react-router-dom'
 import styles from './index.module.scss'
 
 type Props = {
@@ -7,9 +8,24 @@ type Props = {
   type?: 'normal' | 'reply'
   goComment: () => void
   openComment: () => void
+  onCollected: (artId: string) => void
+  isCollected: boolean
+  onLiked: () => void
+  attitude: number
 }
 
-const CommentFooter = ({ type = 'normal', goComment, openComment }: Props) => {
+const CommentFooter = ({
+  type = 'normal',
+  goComment,
+  openComment,
+  onCollected,
+  isCollected,
+  onLiked,
+  attitude
+}: Props) => {
+  const { artId } = useParams<{ artId: string }>()
+  // console.log('收藏的文章ID：', artId)
+
   return (
     <div className={styles.root}>
       <div onClick={openComment} className="input-btn">
@@ -24,20 +40,25 @@ const CommentFooter = ({ type = 'normal', goComment, openComment }: Props) => {
             <p>评论</p>
             {!!1 && <span className="bage">{1}</span>}
           </div>
-          <div className="action-item">
-            <Icon type={true ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
+          <div onClick={onLiked} className="action-item">
+            <Icon type={attitude === 1 ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
             <p>点赞</p>
           </div>
-          <div className="action-item">
-            <Icon type={true ? 'iconbtn_collect_sel' : 'iconbtn_collect'} />
+          <div
+            onClick={() => {
+              onCollected(artId)
+            }}
+            className="action-item"
+          >
+            <Icon type={isCollected ? 'iconbtn_collect_sel' : 'iconbtn_collect'} />
             <p>收藏</p>
           </div>
         </>
       )}
 
       {type === 'reply' && (
-        <div className="action-item">
-          <Icon type={true ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
+        <div onClick={onLiked} className="action-item">
+          <Icon type={attitude === 1 ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
           <p>点赞</p>
         </div>
       )}

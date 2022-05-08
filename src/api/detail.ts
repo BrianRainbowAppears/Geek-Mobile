@@ -16,6 +16,36 @@ export function follow(id: string) {
 export function unFollow(id: string) {
   return request.delete(`/user/followings/${id}`)
 }
+// 收藏文章
+export function collectIt(id: string) {
+  return request.post('/article/collections', {
+    target: id
+  })
+}
+// 取消收藏文章
+export function unCollectIt(id: string) {
+  return request.delete(`/article/collections/${id}`)
+}
+// 点赞文章
+export function likeIt(id: string) {
+  return request.post('/article/likings', {
+    target: id
+  })
+}
+// 取消点赞文章
+export function unLikeIt(id: string) {
+  return request.delete(`/article/likings/${id}`)
+}
+// 给评论或评论回复点赞
+export function commentLike(id: string) {
+  return request.post('/comment/likings', {
+    target: id
+  })
+}
+// 取消给评论或评论回复点赞
+export function unCommentLike(id: string) {
+  return request.delete(`/comment/likings/${id}`)
+}
 
 // 获取评论数据
 /**

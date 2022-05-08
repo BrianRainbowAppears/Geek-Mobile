@@ -10,6 +10,7 @@ import styles from './index.module.scss'
 type Props = {
   // normal 普通 - 文章的评论
   type?: 'normal'
+  onCommentLike: (com_id: string, is_likeing: boolean) => void
 } & ArticleCommentItem
 
 const CommentItem = ({
@@ -22,8 +23,12 @@ const CommentItem = ({
   is_liking,
   content,
   reply_count,
-  pubdate
+  pubdate,
+  com_id,
+  onCommentLike
 }: Props) => {
+  // console.log('评论ID：', com_id)
+
   return (
     <div className={styles.root}>
       {/* 评论人头像 */}
@@ -35,7 +40,12 @@ const CommentItem = ({
           {/* 评论人 */}
           <span className="name">{aut_name}</span>
           {/* 文章评论-点赞 */}
-          <span className="thumbs-up">
+          <span
+            onClick={() => {
+              onCommentLike(com_id, is_liking)
+            }}
+            className="thumbs-up"
+          >
             {like_count}
             <Icon type={is_liking ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
           </span>

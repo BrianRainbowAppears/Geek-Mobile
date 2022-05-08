@@ -7,7 +7,19 @@ import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useEffect, useRef, useState } from 'react'
-import { addCommentApi, follow, getArticleDetail, getComments, unFollow } from '@/api/detail'
+import {
+  addCommentApi,
+  collectIt,
+  commentLike,
+  follow,
+  getArticleDetail,
+  getComments,
+  likeIt,
+  unCollectIt,
+  unCommentLike,
+  unFollow,
+  unLikeIt
+} from '@/api/detail'
 import { ArticleCommentItem, ArticleDetail } from '@/types/data'
 import { formatTime } from '@/utils/utils'
 import DOMPurify from 'dompurify'
@@ -188,7 +200,7 @@ const Article = () => {
         <div ref={commentBoxRef} className="comment">
           <div className="comment-header">
             <span>全部评论（{detail.comm_count}）</span>
-            <span>{detail.like_count} 点赞</span>
+            <span>{commentLikeAmount} 点赞</span>
           </div>
           {detail.comm_count === 0 ? (
             <NoneComment></NoneComment>
@@ -196,7 +208,7 @@ const Article = () => {
             <div className="comment-list">
               {/* 评论列表 */}
               {commentList.map(item => (
-                <CommentItem {...item} key={item.com_id} />
+                <CommentItem onCommentLike={onCommentLike} {...item} key={item.com_id} />
               ))}
               {/* 无限加载组件 */}
               <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
@@ -215,6 +227,62 @@ const Article = () => {
       </Popup>
     )
   }
+
+  // 文章收藏功能
+  const onCollected = async (artId: string) => {
+    // console.log('父组件接收的收藏Id：', artId)
+    // console.log(detail.is_collected)
+    // console.log(detail.art_id)
+    if (!detail.is_collected) {
+      await collectIt(artId)
+      // 发送请求改变服务器数据后，一定也要改变改变存储在useState的数据 进行更新
+      setDetail({ ...detail, is_collected: true })
+    } else {
+      await unCollectIt(artId)
+      setDetail({ ...detail, is_collected: false })
+    }
+  }
+  // 文章点赞功能
+  const onLiked = async () => {
+    console.log(detail.attitude)
+
+    if (!detail.attitude) {
+      await likeIt(detail.art_id)
+      setDetail({ ...detail, attitude: 1 })
+    } else {
+      await unLikeIt(detail.art_id)
+      setDetail({ ...detail, attitude: 0 })
+    }
+  }
+  // 评论点赞
+  const onCommentLike = (com_id: string, is_liking: boolean) => {
+    console.log(com_id)
+    if (!is_liking) {
+      commentLike(com_id)
+    } else {
+      unCommentLike(com_id)
+    }
+    // 更新评论状态
+    const newList = commentList.map(item => {
+      if (item.com_id === com_id) {
+        return {
+          ...item,
+          is_liking: !is_liking,
+          like_count: item.like_count + (is_liking ? -1 : 1)
+        }
+      }
+      return item
+    })
+    setCommentList(newList)
+  }
+  // 评论的点赞总数
+  // const commentLikeAmount = () => {
+  //   return commentList.forEach(item => {
+  //     console.log(item)
+  //   })
+  // }
+  const commentLikeAmount = commentList.reduce((amount, item) => amount + item.like_count, 0)
+  console.log(commentLikeAmount)
 
   // 2. 骨架屏loading效果
   const [show, setShow] = useState(true)
@@ -283,7 +351,14 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter openComment={openComment} goComment={goComment} />
+        <CommentFooter
+          onLiked={onLiked}
+          attitude={detail.attitude}
+          isCollected={detail.is_collected}
+          onCollected={onCollected}
+          openComment={openComment}
+          goComment={goComment}
+        />
       </div>
       {/* 对文章评论弹层 */}
       {renderComment()}
