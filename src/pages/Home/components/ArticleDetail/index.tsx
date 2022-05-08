@@ -9,6 +9,12 @@ import CommentFooter from './components/CommentFooter'
 import { useEffect, useState } from 'react'
 import { getArticleDetail } from '@/api/detail'
 import { ArticleDetail } from '@/types/data'
+import { formatTime } from '@/utils/utils'
+import DOMPurify from 'dompurify'
+// 代码高亮的主题
+import 'highlight.js/styles/dark.css'
+// 骨架屏
+import ContentLoader from 'react-content-loader'
 
 const Article = () => {
   const history = useHistory()
@@ -24,6 +30,8 @@ const Article = () => {
       const { data } = await getArticleDetail(artId)
       console.log('文章详情：', data)
       setDetail(data)
+      // 关闭骨架屏
+      setShow(false)
     })()
   }, [artId])
 
@@ -40,7 +48,7 @@ const Article = () => {
             <h1 className="title">{detail.title}</h1>
 
             <div className="info">
-              <span>{detail.pubdate}</span>
+              <span>{formatTime(detail.pubdate, 'YYYY/MM/DD')}</span>
               <span>{detail.read_count} 阅读</span>
               <span>{detail.comm_count} 评论</span>
             </div>
@@ -56,8 +64,12 @@ const Article = () => {
 
           <div className="content">
             {/* dangerouslySetInnerHTML 类似vue的v-html */}
-            <div className="content-html dg-html" dangerouslySetInnerHTML={{ __html: detail.content }} />
-            <div className="date">发布文章时间：{detail.pubdate}</div>
+            {/* 效果：能渲染html的dom片段, <span>123</span> */}
+            <div
+              className="content-html dg-html"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(detail.content) }}
+            />
+            <div className="date">发布文章时间：{formatTime(detail.pubdate)}</div>
           </div>
         </div>
         {/* 2. 对文章评论结构 */}
@@ -74,6 +86,48 @@ const Article = () => {
           </div>
         </div>
       </div>
+    )
+  }
+
+  // 2. 骨架屏loading效果
+  const [show, setShow] = useState(true)
+  if (show) {
+    // 数据加载中，显示骨架屏。。。
+    return (
+      <ContentLoader viewBox="0 0 375 650" height={650} width={375}>
+        <rect x="0" y="0" rx="5" ry="5" width="40%" height="20" />
+        <rect x="0" y="42" rx="5" ry="5" width="100%" height="200" />
+        <rect x="0" y="265" rx="5" ry="5" width="100%" height="10" />
+        <rect x="0" y="285" rx="5" ry="5" width="100%" height="10" />
+        <rect x="0" y="305" rx="5" ry="5" width="100%" height="10" />
+        <rect x="0" y="335" rx="5" ry="5" width="65%" height="10" />
+        <rect x="75%" y="335" rx="5" ry="5" width="10%" height="10" />
+        <rect x="0" y="355" rx="5" ry="5" width="65%" height="10" />
+        <rect x="75%" y="355" rx="5" ry="5" width="30%" height="10" />
+        <rect x="0" y="375" rx="5" ry="5" width="65%" height="10" />
+        <rect x="75%" y="375" rx="5" ry="5" width="30%" height="10" />
+        <rect x="0" y="395" rx="5" ry="5" width="65%" height="8" />
+        <rect x="75%" y="395" rx="5" ry="5" width="30%" height="8" />
+        <rect x="0" y="415" rx="5" ry="5" width="65%" height="8" />
+        <rect x="75%" y="415" rx="5" ry="5" width="30%" height="8" />
+        <rect x="0" y="445" rx="5" ry="5" width="65%" height="8" />
+        <rect x="75%" y="445" rx="5" ry="5" width="30%" height="8" />
+        <rect x="0" y="465" rx="5" ry="5" width="65%" height="8" />
+        <rect x="75%" y="465" rx="5" ry="5" width="30%" height="8" />
+        <rect x="0" y="485" rx="5" ry="5" width="65%" height="8" />
+        <rect x="75%" y="485" rx="5" ry="5" width="30%" height="8" />
+        <rect x="0" y="505" rx="5" ry="5" width="65%" height="8" />
+        <rect x="75%" y="505" rx="5" ry="5" width="30%" height="8" />
+        <rect x="0" y="525" rx="5" ry="5" width="65%" height="8" />
+        <rect x="75%" y="525" rx="5" ry="5" width="30%" height="8" />
+        <rect x="75%" y="550" rx="5" ry="5" width="10%" height="10" />
+        <circle cx="76.5%" cy="590" r="18" />
+        <circle cx="80%" cy="590" r="18" />
+        <circle cx="83.5%" cy="590" r="18" />
+        <circle cx="87%" cy="590" r="18" />
+        <circle cx="90.5%" cy="590" r="18" />
+        <circle cx="94%" cy="590" r="18" />
+      </ContentLoader>
     )
   }
 

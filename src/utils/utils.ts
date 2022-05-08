@@ -17,3 +17,8 @@ export const relTime = (value: string) => {
   // console.log(dayjs())
   return dayjs().from(value)
 }
+
+// 第二个参数可自定义事件格式化格式
+export function formatTime(time: string, format = 'YYYY年MM月DD日') {
+  return dayjs(time).format(format)
+}
