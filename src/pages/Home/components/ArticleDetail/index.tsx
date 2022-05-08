@@ -6,8 +6,8 @@ import styles from './index.module.scss'
 import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
-import { useEffect, useState } from 'react'
-import { getArticleDetail } from '@/api/detail'
+import { useEffect, useRef, useState } from 'react'
+import { follow, getArticleDetail, unFollow } from '@/api/detail'
 import { ArticleDetail } from '@/types/data'
 import { formatTime } from '@/utils/utils'
 import DOMPurify from 'dompurify'
@@ -35,6 +35,59 @@ const Article = () => {
     })()
   }, [artId])
 
+  // 3. 点击底部评论图标，滚动wrapper盒子，到comment盒子位置
+  // 核心：计算滚动高度。评论区距离页面顶部滚动高度 = 评论区元素距离页面可视区顶部高度 - 页面头部元素高度 + 页面内容滚动高度(默认0)
+  // 思路：
+  // 1. 获取滚动区域盒子和目标位置盒子的DOM对象
+  // 2. 计算目标位置距离页面顶部滚动高度
+  // 3. wrapper盒子根据上一步计算的滚动高度进行滚动
+  // 滚动区域盒子
+  const scrollBoxRef = useRef<HTMLDivElement>(null)
+  // 目标位置盒子
+  const commentBoxRef = useRef<HTMLDivElement>(null)
+  // 是否滚动到目标位置：false 还没有滚动到评论区  true 已经滚动到评论区
+  const isComment = useRef(false)
+  // 执行计算和滚动的方法
+  const goComment = () => {
+    const scrollBox = scrollBoxRef.current
+    const commentBox = commentBoxRef.current
+    if (!scrollBox || !commentBox) return
+    // console.log(scrollBox, commentBox)
+    // console.log(commentBox.getBoundingClientRect().top, scrollBox.scrollTop)
+    if (!isComment.current) {
+      // 滚动到评论区
+      scrollBox.scrollTo({
+        top: commentBox.getBoundingClientRect().top - 45 + scrollBox.scrollTop,
+        behavior: 'smooth'
+      })
+      // 设置为true，代表已经滚动到评论区 => 下次点击回顶
+      isComment.current = true
+    } else {
+      scrollBox.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+      isComment.current = false
+    }
+  }
+
+  // 4. 关注作者
+  const onFollow = async () => {
+    // 思路：点击关注按钮
+    // 1. 没有关注 => 执行关注作者
+    // 2. 关注过 => 执行取关
+    if (detail.is_followed) {
+      // 数据库取关
+      await unFollow(detail.aut_id)
+      // 本地取关
+      setDetail({ ...detail, is_followed: false })
+    } else {
+      // 关注
+      await follow(detail.aut_id)
+      setDetail({ ...detail, is_followed: true })
+    }
+  }
+
   const loadMoreComments = async () => {
     console.log('加载更多评论')
   }
@@ -42,7 +95,9 @@ const Article = () => {
   const renderArticle = () => {
     // 文章详情
     return (
-      <div className="wrapper">
+      // 可滚动区域盒子
+      <div ref={scrollBoxRef} className="wrapper">
+        {/* 1. 文章详情结构 */}
         <div className="article-wrapper">
           <div className="header">
             <h1 className="title">{detail.title}</h1>
@@ -56,7 +111,7 @@ const Article = () => {
             <div className="author">
               <img src={detail.aut_photo} alt="" />
               <span className="name">{detail.aut_name}</span>
-              <span className={classNames('follow', detail.is_followed ? 'followed' : '')}>
+              <span onClick={onFollow} className={classNames('follow', detail.is_followed ? 'followed' : '')}>
                 {detail.is_followed ? '已关注' : '关注'}
               </span>
             </div>
@@ -73,7 +128,7 @@ const Article = () => {
           </div>
         </div>
         {/* 2. 对文章评论结构 */}
-        <div className="comment">
+        <div ref={commentBoxRef} className="comment">
           <div className="comment-header">
             <span>全部评论（10）</span>
             <span>20 点赞</span>
@@ -156,7 +211,7 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter />
+        <CommentFooter goComment={goComment} />
       </div>
     </div>
   )
