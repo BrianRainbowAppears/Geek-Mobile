@@ -1,4 +1,4 @@
-import { NavBar, InfiniteScroll } from 'antd-mobile'
+import { NavBar, InfiniteScroll, Popup } from 'antd-mobile'
 import { useHistory, useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import styles from './index.module.scss'
@@ -7,7 +7,7 @@ import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useEffect, useRef, useState } from 'react'
-import { follow, getArticleDetail, getComments, unFollow } from '@/api/detail'
+import { addCommentApi, follow, getArticleDetail, getComments, unFollow } from '@/api/detail'
 import { ArticleCommentItem, ArticleDetail } from '@/types/data'
 import { formatTime } from '@/utils/utils'
 import DOMPurify from 'dompurify'
@@ -16,6 +16,7 @@ import 'highlight.js/styles/dark.css'
 // 骨架屏
 import ContentLoader from 'react-content-loader'
 import NoneComment from '@/components/NoneComment'
+import CommentInput from './components/CommentInput'
 
 // 使用枚举类型来指定评论类型：
 // 语法：enum 枚举名字 { 枚举属性1=值1， 枚举属性2=值2 }
@@ -118,6 +119,32 @@ const Article = () => {
     }
   }
 
+  // 6. 对文章发表评论
+  const [showComment, setShowComment] = useState(false)
+  // 打开评论弹层
+  const openComment = () => {
+    setShowComment(true)
+  }
+  // 关闭弹层
+  const closeComment = () => {
+    setShowComment(false)
+  }
+  // 对文章发表评论
+  const addComment = async (content: string) => {
+    console.log('子组件传给父的评论内容：', content)
+    try {
+      const { data } = await addCommentApi({
+        target: detail.art_id,
+        content
+      })
+      // 更新评论列表
+      commentList.length > 0 && setCommentList([data.new_obj, ...commentList])
+      // 更新评论数量
+      setDetail({ ...detail, comm_count: detail.comm_count + 1 })
+      closeComment()
+    } catch (error) {}
+  }
+
   // const loadMoreComments = async () => {
   //   console.log('加载更多评论')
   // }
@@ -160,8 +187,8 @@ const Article = () => {
         {/* 2. 对文章评论结构 */}
         <div ref={commentBoxRef} className="comment">
           <div className="comment-header">
-            <span>全部评论（10）</span>
-            <span>20 点赞</span>
+            <span>全部评论（{detail.comm_count}）</span>
+            <span>{detail.like_count} 点赞</span>
           </div>
           {detail.comm_count === 0 ? (
             <NoneComment></NoneComment>
@@ -177,6 +204,15 @@ const Article = () => {
           )}
         </div>
       </div>
+    )
+  }
+
+  // 渲染对文章评论的弹层
+  const renderComment = () => {
+    return (
+      <Popup onMaskClick={closeComment} visible={showComment} position="bottom">
+        <CommentInput addComment={addComment}></CommentInput>
+      </Popup>
     )
   }
 
@@ -247,8 +283,10 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter goComment={goComment} />
+        <CommentFooter openComment={openComment} goComment={goComment} />
       </div>
+      {/* 对文章评论弹层 */}
+      {renderComment()}
     </div>
   )
 }

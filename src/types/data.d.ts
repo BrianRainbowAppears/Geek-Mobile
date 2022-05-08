@@ -14,6 +14,15 @@ export type SuggestionResponse = ApiResponse<Suggestion>
 export type SearchResultResponse = ApiResponse<SearchResult>
 export type ArticleDetailResponse = ApiResponse<ArticleDetail>
 export type ArticleCommentResponse = ApiResponse<ArticleComment>
+export type AddArticleCommnetResponse = ApiResponse<AddArticleCommnet>
+
+// 文章发布评论的类型
+// 注意：接口文档中的返回类型与后台接口返回数据不一致
+export type AddArticleCommnet = {
+  com_id: string
+  new_obj: ArticleCommentItem
+  target: string
+}
 
 // 评论项的类型
 export type ArticleCommentItem = {

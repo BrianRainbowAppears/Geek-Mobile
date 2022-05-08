@@ -6,12 +6,13 @@ type Props = {
   // reply 回复评论
   type?: 'normal' | 'reply'
   goComment: () => void
+  openComment: () => void
 }
 
-const CommentFooter = ({ type = 'normal', goComment }: Props) => {
+const CommentFooter = ({ type = 'normal', goComment, openComment }: Props) => {
   return (
     <div className={styles.root}>
-      <div className="input-btn">
+      <div onClick={openComment} className="input-btn">
         <Icon type="iconbianji" />
         <span>抢沙发</span>
       </div>

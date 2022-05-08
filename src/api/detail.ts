@@ -1,4 +1,4 @@
-import { ArticleCommentResponse, ArticleDetailResponse } from './../types/data.d'
+import { AddArticleCommnetResponse, ArticleCommentResponse, ArticleDetailResponse } from './../types/data.d'
 import request from '@/utils/request'
 
 // 获取文章详情
@@ -27,4 +27,14 @@ export function unFollow(id: string) {
  */
 export function getComments(type: string, id: string, offset: string | null): Promise<ArticleCommentResponse> {
   return request.get('/comments', { params: { type, source: id, offset } })
+}
+
+// 对文章发表评论
+type DataComment = {
+  target: string // 评论的目标id（评论文章即为文章id，对评论进行回复则为评论id）
+  content: string // 评论/回复内容
+  art_id?: string // 文章id，对评论内容发表回复时，需要传递此参数，表明所属文章id。对文章进行评论，不要传此参数。
+}
+export function addCommentApi(data: DataComment): Promise<AddArticleCommnetResponse> {
+  return request.post('/comments', data)
 }
