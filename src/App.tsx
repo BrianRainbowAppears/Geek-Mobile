@@ -12,16 +12,20 @@ import Chat from '@/pages/Profile/Chat'
 import SearchResult from '@/pages/Search/Result'
 import customHistory from './utils/history'
 import { AuthRoute } from './components/AuthRoute'
+import KeepAlive from './components/Keep-alive'
 
 function App() {
   return (
     //{/* 配置路由 */}
     <Router history={customHistory}>
       <div className="app">
+        <KeepAlive path="/home">
+          <Layout></Layout>
+        </KeepAlive>
         <Switch>
           <Redirect exact from="/" to="/home"></Redirect>
           <Route path="/login" component={Login}></Route>
-          <Route path="/home" component={Layout}></Route>
+          {/* <Route path="/home" component={Layout}></Route> */}
           <Route path="/chat" component={Chat}></Route>
           <Route path="/test" component={Test}></Route>
           <Route path="/article/:artId">
