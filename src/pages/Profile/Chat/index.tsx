@@ -47,6 +47,7 @@ const Chat = () => {
     // 2. 接收服务器发送给浏览器的消息 => 事件名是后台提供的
     socketIo.current.on('message', data => {
       console.log('接收服务器的消息：', data)
+      // 把小智回复的消息显示到列表
       setList(l => [
         ...l,
         {
@@ -76,13 +77,28 @@ const Chat = () => {
     setMsg('')
   }
 
+  // 监听聊天列表状态变化 => 执行滚动到底部 => 避免聊天内容被遮盖
+  const scrollBoxRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    // list发生变化就会执行
+    // 思路：
+    // 1. 确定滚动区域盒子：聊天列表chat-list盒子 => 获取滚动盒子的DOM对象
+    // 2. 获取滚动高度 => 滚动盒子DOM对象.scrollHeight
+    // 3. 执行滚动 => 滚动盒子DOM对象.scrollTo({top: top})
+    const scrollBox = scrollBoxRef.current
+    scrollBox?.scrollTo({
+      top: scrollBox.scrollHeight,
+      behavior: 'smooth'
+    })
+  }, [list])
+
   return (
     <div className={styles.root}>
       <NavBar className="fixed-header" onBack={() => history.go(-1)}>
         小智同学
       </NavBar>
 
-      <div className="chat-list">
+      <div ref={scrollBoxRef} className="chat-list">
         {list.map((item, i) => (
           <div key={i} className={classnames('chat-item', item.type === 'xz' ? 'self' : 'user')}>
             {item.type === 'xz' ? (
